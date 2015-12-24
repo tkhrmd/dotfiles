@@ -37,13 +37,14 @@ set ttyfast
 set wildmode=list:longest
 
 " map
+nnoremap # #N
+nnoremap * *N
+nnoremap <C-]> g<C-]>
 nnoremap <Space>g :silent<Space>grep!<Space>
 nnoremap <Space>v :vimgrep<Space>/\c/j<Space><S-Left><Right>
 nnoremap Q <Nop>
-noremap # #N
-noremap * *N
-noremap g# g#N
-noremap g* g*N
+nnoremap g# g#N
+nnoremap g* g*N
 
 " autocmd
 autocmd BufAdd * setlocal bufhidden=delete
