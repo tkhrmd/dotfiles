@@ -54,7 +54,9 @@ autocmd QuickfixCmdPost grep,vimgrep cw
 set runtimepath+=~/.vim/plugins/YouCompleteMe
 set runtimepath+=~/.vim/plugins/ctrlp-py-matcher
 set runtimepath+=~/.vim/plugins/ctrlp.vim
+set runtimepath+=~/.vim/plugins/tern_for_vim,~/.vim/plugins/tern_for_vim/after
 set runtimepath+=~/.vim/plugins/vim-alignta
+set runtimepath+=~/.vim/plugins/vim-autoformat
 set runtimepath+=~/.vim/plugins/vim-go
 set runtimepath+=~/.vim/plugins/vim-javascript
 set runtimepath+=~/.vim/plugins/vim-lucius
