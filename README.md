@@ -8,7 +8,7 @@
 mkdir -p ~/.vim/plugins
 cd ~/.vim/plugins/
 
-cat << EOP | xargs -n 1 git clone
+cat << EOP | xargs -n 1 -P 4 git clone
 https://github.com/Valloric/YouCompleteMe.git
 https://github.com/FelikZ/ctrlp-py-matcher.git
 https://github.com/ctrlpvim/ctrlp.vim.git
