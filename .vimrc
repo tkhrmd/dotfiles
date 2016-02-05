@@ -48,6 +48,16 @@ nnoremap g* g*N
 
 " autocmd
 autocmd BufAdd * setlocal bufhidden=delete
+autocmd FileType css        setlocal shiftwidth=2 tabstop=2
+autocmd FileType haml       setlocal shiftwidth=2 tabstop=2
+autocmd FileType html       setlocal shiftwidth=2 tabstop=2
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+autocmd FileType json       setlocal shiftwidth=2 tabstop=2
+autocmd FileType jsx        setlocal shiftwidth=2 tabstop=2
+autocmd FileType ruby       setlocal shiftwidth=2 tabstop=2
+autocmd FileType scala      setlocal shiftwidth=2 tabstop=2
+autocmd FileType vim        setlocal shiftwidth=2 tabstop=2
+autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2
 autocmd QuickfixCmdPost grep,vimgrep cw
 
 " plugins
