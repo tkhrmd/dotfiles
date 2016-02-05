@@ -15,6 +15,7 @@ https://github.com/Chiel92/vim-autoformat.git
 https://github.com/FelikZ/ctrlp-py-matcher.git
 https://github.com/Valloric/YouCompleteMe.git
 https://github.com/ctrlpvim/ctrlp.vim.git
+https://github.com/digitaltoad/vim-jade.git
 https://github.com/fatih/vim-go.git
 https://github.com/h1mesuke/vim-alignta.git
 https://github.com/jonathanfilip/vim-lucius.git

@@ -51,6 +51,7 @@ autocmd BufAdd * setlocal bufhidden=delete
 autocmd FileType css        setlocal shiftwidth=2 tabstop=2
 autocmd FileType haml       setlocal shiftwidth=2 tabstop=2
 autocmd FileType html       setlocal shiftwidth=2 tabstop=2
+autocmd FileType jade       setlocal shiftwidth=2 tabstop=2
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType json       setlocal shiftwidth=2 tabstop=2
 autocmd FileType jsx        setlocal shiftwidth=2 tabstop=2
@@ -68,6 +69,7 @@ set runtimepath+=~/.vim/plugins/tern_for_vim,~/.vim/plugins/tern_for_vim/after
 set runtimepath+=~/.vim/plugins/vim-alignta
 set runtimepath+=~/.vim/plugins/vim-autoformat
 set runtimepath+=~/.vim/plugins/vim-go
+set runtimepath+=~/.vim/plugins/vim-jade
 set runtimepath+=~/.vim/plugins/vim-javascript
 set runtimepath+=~/.vim/plugins/vim-lucius
 set runtimepath+=~/.vim/plugins/vim-remove-trailing-space
