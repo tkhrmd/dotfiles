@@ -2,13 +2,11 @@
 
 ## vim
 
-### install plugin
-
 ```
-# plugin directory
+# make plugin directory
 mkdir -p ~/.vim/plugins
 
-# clone plugins
+# donload plugins
 cd ~/.vim/plugins/
 cat << EOP | xargs -n 1 -P 4 git clone
 https://github.com/Chiel92/vim-autoformat.git
@@ -25,7 +23,7 @@ https://github.com/pangloss/vim-javascript.git
 https://github.com/ternjs/tern_for_vim.git
 EOP
 
-# install vim-autoformat
+# install js-beautify for vim-autoformat
 npm install -g js-beautify
 
 # install YouCompleteMe
