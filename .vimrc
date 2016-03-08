@@ -9,7 +9,7 @@ set background=dark
 set cursorline
 set expandtab
 set fileformats=unix,dos,mac
-set grepprg=pt\ --nogroup
+set grepprg=pt\ --nogroup\  --nocolor
 set hlsearch
 set ignorecase
 set laststatus=2
