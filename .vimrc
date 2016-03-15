@@ -9,7 +9,7 @@ set background=dark
 set cursorline
 set expandtab
 set fileformats=unix,dos,mac
-set grepprg=pt\ --nogroup\  --nocolor
+set grepprg=pt\ --nogroup\ --nocolor\ --smart-case
 set hlsearch
 set ignorecase
 set laststatus=2
@@ -59,7 +59,8 @@ autocmd FileType ruby       setlocal shiftwidth=2 tabstop=2
 autocmd FileType scala      setlocal shiftwidth=2 tabstop=2
 autocmd FileType vim        setlocal shiftwidth=2 tabstop=2
 autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2
-autocmd QuickfixCmdPost grep,vimgrep cw
+autocmd QuickfixCmdPost grep,vimgrep cwindow
+autocmd ShellCmdPost * setlocal t_Co=8 t_Co=256
 
 " plugins
 set runtimepath+=~/.vim/plugins/YouCompleteMe
