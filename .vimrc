@@ -39,8 +39,9 @@ set wildmode=list:longest
 " map
 nnoremap # #N
 nnoremap * *N
+nnoremap / /\v
 nnoremap <C-]> g<C-]>
-nnoremap <Space>g :silent<Space>grep!<Space>
+nnoremap <Space>g :silent<Space>grep!<Space><Space>\|<Space>redraw!<S-Left><S-Left><Left>
 nnoremap <Space>v :vimgrep<Space>/\c/j<Space><S-Left><Right>
 nnoremap Q <Nop>
 nnoremap g# g#N
@@ -60,7 +61,6 @@ autocmd FileType scala      setlocal shiftwidth=2 tabstop=2
 autocmd FileType vim        setlocal shiftwidth=2 tabstop=2
 autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2
 autocmd QuickfixCmdPost grep,vimgrep cwindow
-autocmd ShellCmdPost * setlocal t_Co=8 t_Co=256
 
 " plugins
 set runtimepath+=~/.vim/plugins/YouCompleteMe
