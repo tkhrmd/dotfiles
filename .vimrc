@@ -17,6 +17,7 @@ set lazyredraw
 set list
 set listchars=tab:^\ ,trail:-
 set noswapfile
+set nowrap
 set nowrapscan
 set number
 set scroll=5
@@ -37,49 +38,30 @@ set ttyfast
 set wildmode=list:longest
 
 " map
-nnoremap # #N
-nnoremap * *N
 nnoremap / /\v
-nnoremap <C-]> g<C-]>
-nnoremap <Space>g :silent<Space>grep!<Space><Space>\|<Space>redraw!<S-Left><S-Left><Left>
-nnoremap <Space>v :vimgrep<Space>/\c/j<Space><S-Left><Right>
+nnoremap ,g :silent<Space>grep!<Space><Space>\|<Space>redraw!<S-Left><S-Left><Left>
+nnoremap ,v :vimgrep<Space>/\c/j<Space><S-Left><Right>
 nnoremap Q <Nop>
-nnoremap g# g#N
-nnoremap g* g*N
 
 " autocmd
 autocmd BufAdd * setlocal bufhidden=delete
 autocmd FileType css        setlocal shiftwidth=2 tabstop=2
-autocmd FileType haml       setlocal shiftwidth=2 tabstop=2
 autocmd FileType html       setlocal shiftwidth=2 tabstop=2
-autocmd FileType jade       setlocal shiftwidth=2 tabstop=2
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType json       setlocal shiftwidth=2 tabstop=2
-autocmd FileType jsx        setlocal shiftwidth=2 tabstop=2
-autocmd FileType ruby       setlocal shiftwidth=2 tabstop=2
-autocmd FileType scala      setlocal shiftwidth=2 tabstop=2
 autocmd FileType vim        setlocal shiftwidth=2 tabstop=2
 autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2
+autocmd FileType go         setlocal noexpandtab
 autocmd QuickfixCmdPost grep,vimgrep cwindow
-
-" plugins
-set runtimepath+=~/.vim/plugins/YouCompleteMe
-set runtimepath+=~/.vim/plugins/ctrlp-py-matcher
-set runtimepath+=~/.vim/plugins/ctrlp.vim
-set runtimepath+=~/.vim/plugins/tern_for_vim,~/.vim/plugins/tern_for_vim/after
-set runtimepath+=~/.vim/plugins/vim-alignta
-set runtimepath+=~/.vim/plugins/vim-autoformat
-set runtimepath+=~/.vim/plugins/vim-go
-set runtimepath+=~/.vim/plugins/vim-jade
-set runtimepath+=~/.vim/plugins/vim-javascript
-set runtimepath+=~/.vim/plugins/vim-lucius
-set runtimepath+=~/.vim/plugins/vim-remove-trailing-space
-set runtimepath+=~/.vim/plugins/vim-wipeout-noncurrent-buffers
 
 " plugin options
 let g:ctrlp_match_func={'match': 'pymatcher#PyMatch'}
-let g:ctrlp_use_caching=0
+" let g:ctrlp_use_caching=0
 let g:ctrlp_user_command='files -A %s'
+let g:formatterpath = ['~/.vim/pack/plugins/start/vim-autoformat/formatprograms/node_modules/.bin']
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
 
 " syntax
 colorscheme lucius
