@@ -12,7 +12,3 @@ set guioptions-=r
 
 " syntax
 colorscheme lucius
-
-" starting directory
-let $DESKTOP='$HOME/Desktop'
-cd $DESKTOP
