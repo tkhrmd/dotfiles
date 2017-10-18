@@ -44,15 +44,18 @@ nnoremap ,v :vimgrep<Space>/\c/j<Space><S-Left><Right>
 nnoremap Q <Nop>
 
 " autocmd
-autocmd BufAdd * setlocal bufhidden=delete
-autocmd FileType css        setlocal shiftwidth=2 tabstop=2
-autocmd FileType html       setlocal shiftwidth=2 tabstop=2
-autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
-autocmd FileType json       setlocal shiftwidth=2 tabstop=2
-autocmd FileType vim        setlocal shiftwidth=2 tabstop=2
-autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2
-autocmd FileType go         setlocal noexpandtab
-autocmd QuickfixCmdPost grep,vimgrep cwindow
+augroup grp
+  autocmd!
+  autocmd BufAdd * setlocal bufhidden=delete
+  autocmd FileType css        setlocal shiftwidth=2 tabstop=2
+  autocmd FileType html       setlocal shiftwidth=2 tabstop=2
+  autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+  autocmd FileType json       setlocal shiftwidth=2 tabstop=2
+  autocmd FileType vim        setlocal shiftwidth=2 tabstop=2
+  autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2
+  autocmd FileType go         setlocal noexpandtab
+  autocmd QuickfixCmdPost grep,vimgrep cwindow
+augroup END
 
 " plugin options
 let g:ctrlp_match_func = {'match': 'pymatcher#PyMatch'}
@@ -61,10 +64,10 @@ let g:ctrlp_user_command = 'files -A %s'
 let g:ctrlp_cache_dir = $HOME.'/.vim/ctrlp_cache'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_lazy_update = 1
-let g:formatterpath = ['~/.vim/pack/plugins/start/vim-autoformat/formatprograms/node_modules/.bin']
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+" let g:formatterpath = ['']
+inoremap <expr> <Tab>   pumvisible() ? '<C-n>'     : '<Tab>'
+inoremap <expr> <S-Tab> pumvisible() ? '<C-p>'     : '<S-Tab>'
+inoremap <expr> <cr>    pumvisible() ? '<C-y><cr>' : '<cr>'
 
 " syntax
 colorscheme lucius
