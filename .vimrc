@@ -39,8 +39,10 @@ set wildmode=list:longest
 
 " map
 nnoremap / /\v
-nnoremap ,g :silent<Space>grep!<Space><Space>\|<Space>redraw!<S-Left><S-Left><Left>
-nnoremap ,v :vimgrep<Space>/\c/j<Space><S-Left><Right>
+nnoremap <Space>g :silent<Space>grep!<Space><Space>\|<Space>redraw!<S-Left><S-Left><Left>
+nnoremap <Space>v :vimgrep<Space>/\c/j<Space><S-Left><Right>
+nnoremap <Space>h  ^
+nnoremap <Space>l  $
 nnoremap Q <Nop>
 
 " autocmd
@@ -75,3 +77,32 @@ syntax enable
 
 " filetype
 filetype plugin indent on
+
+" plugin install command
+function! PluginInstall()
+  let repos = [
+        \'https://github.com/FelikZ/ctrlp-py-matcher.git',
+        \'https://github.com/ctrlpvim/ctrlp.vim.git',
+        \'https://github.com/fatih/vim-go.git',
+        \'https://github.com/h1mesuke/vim-alignta.git',
+        \'https://github.com/jonathanfilip/vim-lucius.git',
+        \'https://github.com/maralla/completor.vim.git',
+        \'https://github.com/othree/yajs.vim.git',
+        \'https://github.com/Chiel92/vim-autoformat.git',
+        \]
+  if has('win32') || has('win64')
+    let dir = $HOME . '\vimfiles\pack\a\start\'
+  else
+    let dir = $HOME . '/.vim/pack/a/start/'
+  endif
+  for repo in repos
+    let name = substitute(fnamemodify(repo, ":t"), '.git', '', '')
+    let path = dir . name
+    if isdirectory(path)
+      echo 'Update ' . name . ': ' . system('git -C ' . path . ' pull')
+    else
+      echo 'Download ' . name . ': ' . system('git clone ' . repo . ' ' . path)
+    endif
+  endfor
+endfunction
+command! PluginInstall call PluginInstall()
