@@ -18,7 +18,7 @@ set laststatus=2
 set lazyredraw
 set list
 set listchars=tab:^\ ,trail:-
-set mouse
+set mouse=
 set noswapfile
 set nowrap
 set nowrapscan
