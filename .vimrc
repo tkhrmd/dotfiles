@@ -115,7 +115,7 @@ function! s:plugin_update() abort
         \ 'err_io': 'buffer', 'err_name': bname,
         \}
   for url in urls
-    let path = expand(join([dir, fnamemodify(url, ':t:r')], '/'))
+    let path = expand(dir.'/'.fnamemodify(url, ':t:r'))
     if isdirectory(path)
       let cmd = ['git', '-C', path, 'pull']
     else
