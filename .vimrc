@@ -12,16 +12,20 @@ set fileformats=unix,dos,mac
 set grepprg=pt\ --nogroup\ --nocolor\ --smart-case
 set hlsearch
 set ignorecase
+set iminsert=0
+set imsearch=0
 set laststatus=2
 set lazyredraw
 set list
 set listchars=tab:^\ ,trail:-
+set mouse
 set noswapfile
 set nowrap
 set nowrapscan
 set number
 set scroll=5
 set scrolloff=5
+set shellslash
 set shiftwidth=4
 set showcmd
 set showmatch
@@ -42,8 +46,8 @@ set wildmode=list:longest
 nnoremap / /\v
 nnoremap <Space>g :silent<Space>grep!<Space><Space>\|<Space>redraw!<S-Left><S-Left><Left>
 nnoremap <Space>v :vimgrep<Space>/\c/j<Space><S-Left><Right>
-nnoremap <Space>h  ^
-nnoremap <Space>l  $
+" nnoremap <Space>h ^
+" nnoremap <Space>l $
 nnoremap Q <Nop>
 
 " autocmd
@@ -77,7 +81,7 @@ inoremap <expr> <S-Tab> pumvisible() ? '<C-p>'     : '<S-Tab>'
 inoremap <expr> <cr>    pumvisible() ? '<C-y><cr>' : '<cr>'
 
 " syntax
-colorscheme one
+colorscheme lucius
 syntax enable
 
 " filetype
