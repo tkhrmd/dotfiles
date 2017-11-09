@@ -13,6 +13,3 @@ set guioptions-=r
 " syntax
 " colorscheme lucius
 colorscheme one
-set shellslash
-set iminsert=0
-set imsearch=0
