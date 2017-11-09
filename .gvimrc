@@ -1,7 +1,7 @@
 " options
 set background=dark
 set clipboard=unnamed
-set guifont=Ricty:h14
+set guifont=Ricty:h13
 set guioptions-=L
 set guioptions-=R
 set guioptions-=T
@@ -11,4 +11,8 @@ set guioptions-=m
 set guioptions-=r
 
 " syntax
-colorscheme lucius
+" colorscheme lucius
+colorscheme one
+set shellslash
+set iminsert=0
+set imsearch=0
