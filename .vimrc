@@ -46,8 +46,6 @@ set wildmode=list:longest
 nnoremap / /\v
 nnoremap <Space>g :silent<Space>grep!<Space><Space>\|<Space>redraw!<S-Left><S-Left><Left>
 nnoremap <Space>v :vimgrep<Space>/\c/j<Space><S-Left><Right>
-" nnoremap <Space>h ^
-" nnoremap <Space>l $
 nnoremap Q <Nop>
 
 " autocmd
@@ -69,16 +67,7 @@ augroup END
 let g:ctrlp_match_func = {'match': 'pymatcher#PyMatch'}
 let g:ctrlp_user_command = 'files -A %s'
 let g:ctrlp_lazy_update = 1
-" let g:ctrlp_use_caching = 0
 let g:ctrlp_clear_cache_on_exit = 0
-if has('win32') || has('win64')
-  let g:ctrlp_cache_dir = expand('~/vimfiles/ctrlp_cache')
-else
-  let g:ctrlp_cache_dir = expand('~/.vim/ctrlp_cache')
-endif
-inoremap <expr> <Tab>   pumvisible() ? '<C-n>'     : '<Tab>'
-inoremap <expr> <S-Tab> pumvisible() ? '<C-p>'     : '<S-Tab>'
-inoremap <expr> <cr>    pumvisible() ? '<C-y><cr>' : '<cr>'
 
 " syntax
 colorscheme lucius
@@ -87,7 +76,7 @@ syntax enable
 " filetype
 filetype plugin indent on
 
-" plugin manager
+" plugin updater
 function! s:plugin_update() abort
   let urls = [
         \ 'https://github.com/FelikZ/ctrlp-py-matcher.git',
