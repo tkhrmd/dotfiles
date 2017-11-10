@@ -78,7 +78,7 @@ filetype plugin indent on
 
 " plugin updater
 function! s:plugin_update() abort
-  let urls = [
+  let repos = [
         \ 'https://github.com/FelikZ/ctrlp-py-matcher.git',
         \ 'https://github.com/ctrlpvim/ctrlp.vim.git',
         \ 'https://github.com/fatih/vim-go.git',
@@ -94,21 +94,21 @@ function! s:plugin_update() abort
         \ 'https://github.com/rakr/vim-one.git',
         \]
   if has('win32') || has('win64')
-    let dir = '~/vimfiles/pack/a/start'
+    let basedir = '~/vimfiles/pack/a/start'
   else
-    let dir = '~/.vim/pack/a/start'
+    let basedir = '~/.vim/pack/a/start'
   endif
   let bname = '[Plugin]'
   let opts = {
         \ 'out_io': 'buffer', 'out_name': bname,
         \ 'err_io': 'buffer', 'err_name': bname,
         \}
-  for url in urls
-    let path = expand(dir.'/'.fnamemodify(url, ':t:r'))
-    if isdirectory(path)
-      let cmd = ['git', '-C', path, 'pull']
+  for repo in repos
+    let dir = expand(basedir.'/'.fnamemodify(repo, ':t:r'))
+    if isdirectory(dir)
+      let cmd = ['git', '-C', dir, 'pull']
     else
-      let cmd = ['git', 'clone', url, path]
+      let cmd = ['git', 'clone', repo, dir]
     endif
     call job_start(cmd, opts)
   endfor
