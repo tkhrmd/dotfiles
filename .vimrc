@@ -70,7 +70,8 @@ let g:ctrlp_lazy_update = 1
 let g:ctrlp_clear_cache_on_exit = 0
 
 " syntax
-colorscheme lucius
+" colorscheme lucius
+colorscheme one
 syntax enable
 
 " filetype
@@ -84,12 +85,10 @@ function! s:plugin_update() abort
         \ 'https://github.com/fatih/vim-go.git',
         \ 'https://github.com/h1mesuke/vim-alignta.git',
         \ 'https://github.com/jonathanfilip/vim-lucius.git',
-        \ 'https://github.com/maralla/completor.vim.git',
         \ 'https://github.com/othree/yajs.vim.git',
         \ 'https://github.com/Chiel92/vim-autoformat.git',
-        \ 'https://github.com/arcticicestudio/nord-vim.git',
-        \ 'https://github.com/vim-scripts/renamer.vim.git',
-        \ 'https://github.com/vim-scripts/velocity.vim.git',
+        \ 'https://github.com/qpkorr/vim-renamer.git',
+        \ 'https://github.com/lepture/vim-velocity.git',
         \ 'https://github.com/tkhrmd/vim-hankaku.git',
         \ 'https://github.com/rakr/vim-one.git',
         \]
