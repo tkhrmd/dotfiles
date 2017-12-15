@@ -68,6 +68,7 @@ let g:ctrlp_match_func = {'match': 'pymatcher#PyMatch'}
 let g:ctrlp_user_command = 'files -A %s'
 let g:ctrlp_lazy_update = 1
 let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_match_window = 'results:50'
 
 " syntax
 " colorscheme lucius
