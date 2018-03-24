@@ -9,7 +9,7 @@ set background=dark
 set cursorline
 set expandtab
 set fileformats=unix,dos,mac
-set grepprg=rg\ --vimgrep
+set grepprg=rg\ --vimgrep\ --smart-case
 set hlsearch
 set ignorecase
 set iminsert=0
@@ -44,8 +44,8 @@ set wildmode=list:longest
 
 " map
 nnoremap / /\v
-nnoremap <Space>g :silent<Space>grep!<Space><Space>\|<Space>redraw!<S-Left><S-Left><Left>
-nnoremap <Space>v :vimgrep<Space>/\c/j<Space><S-Left><Right>
+nnoremap <Space>g :silent<Space>grep!<Space><Space>\|<Space>redraw!<HOME><S-Right><S-Right><Right>
+nnoremap <Space>v :vimgrep<Space>/\c/j<HOME><S-Right><Right><Right>
 nnoremap Q <Nop>
 
 " autocmd
@@ -76,7 +76,7 @@ let g:ctrlp_prompt_mappings = {
 
 " syntax
 " colorscheme lucius
-colorscheme one
+colorscheme gruvbox
 syntax enable
 
 " filetype
@@ -96,6 +96,7 @@ function! s:plugin_update() abort
         \ 'https://github.com/lepture/vim-velocity.git',
         \ 'https://github.com/tkhrmd/vim-hankaku.git',
         \ 'https://github.com/rakr/vim-one.git',
+        \ 'https://github.com/morhetz/gruvbox.git',
         \]
   if has('win32') || has('win64')
     let basedir = '~/vimfiles/pack/a/start'
