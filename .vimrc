@@ -40,7 +40,7 @@ set t_Co=256
 set tabstop=4
 set ttyfast
 set viminfo=
-set wildmode=list:longest
+set wildmode=longest,list
 
 " map
 nnoremap / /\v
