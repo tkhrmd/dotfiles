@@ -1,4 +1,4 @@
 " options
 set clipboard=unnamed
-set guifont=Ricty:h13
+set guifont=Cica:h12
 set guioptions=
