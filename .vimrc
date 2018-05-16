@@ -5,6 +5,7 @@ scriptencoding utf-8
 " options
 set ambiwidth=double
 set autoindent
+set background=dark
 set cursorline
 set expandtab
 set fileformats=unix,dos,mac
@@ -107,7 +108,7 @@ function! s:plugin_update() abort
   for repo in repos
     let dir = expand(basedir.'/'.fnamemodify(repo, ':t:r'))
     if isdirectory(dir)
-      let cmd = ['git', 'pull', '-C', dir]
+      let cmd = ['git', '-C', dir, 'pull']
     else
       let cmd = ['git', 'clone', repo, dir]
     endif
