@@ -5,15 +5,12 @@ scriptencoding utf-8
 " options
 set ambiwidth=double
 set autoindent
-set background=dark
 set cursorline
 set expandtab
 set fileformats=unix,dos,mac
 set grepprg=rg\ --vimgrep\ --smart-case
 set hlsearch
 set ignorecase
-set iminsert=0
-set imsearch=0
 set laststatus=2
 set lazyredraw
 set list
@@ -36,7 +33,6 @@ set smarttab
 set splitbelow
 set splitright
 set statusline=%f\ %h%m%r%w%=%{&fileformat}\ %{&fileencoding}\ %{&filetype}%4p%%%6l:%-4.(%c%)
-set t_Co=256
 set tabstop=4
 set ttyfast
 set viminfo=
@@ -111,7 +107,7 @@ function! s:plugin_update() abort
   for repo in repos
     let dir = expand(basedir.'/'.fnamemodify(repo, ':t:r'))
     if isdirectory(dir)
-      let cmd = ['git', '-C', dir, 'pull']
+      let cmd = ['git', 'pull', '-C', dir]
     else
       let cmd = ['git', 'clone', repo, dir]
     endif
