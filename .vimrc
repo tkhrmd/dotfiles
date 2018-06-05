@@ -94,6 +94,7 @@ function! s:plugin_update() abort
         \ 'https://github.com/tkhrmd/vim-hankaku.git',
         \ 'https://github.com/rakr/vim-one.git',
         \ 'https://github.com/morhetz/gruvbox.git',
+        \ 'https://github.com/posva/vim-vue.git',
         \]
   if has('win32') || has('win64')
     let basedir = '~/vimfiles/pack/a/start'
