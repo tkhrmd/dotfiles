@@ -11,8 +11,18 @@ git config --global alias.b branch
 git config --global alias.f fetch
 ```
 
-## Homebrew
+## Homebrew (Mac)
 
 ```
 brew install ripgrep tmux node peco
 ```
+
+## Install (Mac)
+
+* Homebrew
+* Docker for Mac
+* AppCleaner
+* Spectacle
+* MacVim
+* Amphetamine
+* Quick View Calendar
