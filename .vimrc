@@ -70,6 +70,15 @@ let g:ctrlp_prompt_mappings = {
       \ 'PrtBS()': ['<c-h>', '<bs>'],
       \ 'PrtCurLeft()': ['<left>'],
       \}
+let g:ctrlp_working_path_mode = 0
+"let g:ctrlp_working_path_mode = 'ra'
+let g:ale_fixers = { 
+      \ 'vue': ['prettier-eslint'],
+      \ 'javascript': ['prettier'],
+      \}
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_insert_leave = 1
 
 " syntax
 " colorscheme lucius
@@ -88,13 +97,14 @@ function! s:plugin_update() abort
         \ 'https://github.com/h1mesuke/vim-alignta.git',
         \ 'https://github.com/jonathanfilip/vim-lucius.git',
         \ 'https://github.com/othree/yajs.vim.git',
-        \ 'https://github.com/Chiel92/vim-autoformat.git',
         \ 'https://github.com/qpkorr/vim-renamer.git',
-        \ 'https://github.com/lepture/vim-velocity.git',
         \ 'https://github.com/tkhrmd/vim-hankaku.git',
         \ 'https://github.com/rakr/vim-one.git',
         \ 'https://github.com/morhetz/gruvbox.git',
         \ 'https://github.com/posva/vim-vue.git',
+        \ 'https://github.com/thinca/vim-quickrun.git',
+        \ 'https://github.com/w0rp/ale.git',
+        \ 'https://github.com/tpope/vim-markdown.git',
         \]
   if has('win32') || has('win64')
     let basedir = '~/vimfiles/pack/a/start'
