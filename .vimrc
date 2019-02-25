@@ -57,14 +57,13 @@ augroup grp
   autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2
   autocmd FileType go         setlocal noexpandtab
   autocmd QuickfixCmdPost grep,vimgrep cwindow
-  autocmd BufRead,BufNewFile *.vm setfiletype velocity
 augroup END
 
 " plugin options
 let g:ctrlp_match_func = {'match': 'pymatcher#PyMatch'}
 let g:ctrlp_user_command = 'rg --files %s'
 let g:ctrlp_lazy_update = 1
-let g:ctrlp_clear_cache_on_exit = 0
+"let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_match_window = 'results:50'
 let g:ctrlp_prompt_mappings = {
       \ 'PrtBS()': ['<c-h>', '<bs>'],
@@ -72,6 +71,7 @@ let g:ctrlp_prompt_mappings = {
       \}
 let g:ctrlp_working_path_mode = 0
 "let g:ctrlp_working_path_mode = 'ra'
+
 let g:ale_fixers = { 
       \ 'vue': ['prettier-eslint'],
       \ 'javascript': ['prettier'],
@@ -79,6 +79,15 @@ let g:ale_fixers = {
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 1
+
+if executable('typescript-language-server')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'javascript support using typescript-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
+        \ 'whitelist': ['javascript', 'javascript.jsx'],
+        \})
+endif
 
 " syntax
 " colorscheme lucius
@@ -88,43 +97,29 @@ syntax enable
 " filetype
 filetype plugin indent on
 
-" plugin updater
-function! s:plugin_update() abort
-  let repos = [
-        \ 'https://github.com/FelikZ/ctrlp-py-matcher.git',
-        \ 'https://github.com/ctrlpvim/ctrlp.vim.git',
-        \ 'https://github.com/fatih/vim-go.git',
-        \ 'https://github.com/h1mesuke/vim-alignta.git',
-        \ 'https://github.com/jonathanfilip/vim-lucius.git',
-        \ 'https://github.com/othree/yajs.vim.git',
-        \ 'https://github.com/qpkorr/vim-renamer.git',
-        \ 'https://github.com/tkhrmd/vim-hankaku.git',
-        \ 'https://github.com/rakr/vim-one.git',
-        \ 'https://github.com/morhetz/gruvbox.git',
-        \ 'https://github.com/posva/vim-vue.git',
-        \ 'https://github.com/thinca/vim-quickrun.git',
-        \ 'https://github.com/w0rp/ale.git',
-        \ 'https://github.com/tpope/vim-markdown.git',
-        \]
-  if has('win32') || has('win64')
-    let basedir = '~/vimfiles/pack/a/start'
-  else
-    let basedir = '~/.vim/pack/a/start'
-  endif
-  let bname = '[Plugin]'
-  let opts = {
-        \ 'out_io': 'buffer', 'out_name': bname,
-        \ 'err_io': 'buffer', 'err_name': bname,
-        \}
-  for repo in repos
-    let dir = expand(basedir.'/'.fnamemodify(repo, ':t:r'))
-    if isdirectory(dir)
-      let cmd = ['git', '-C', dir, 'pull']
-    else
-      let cmd = ['git', 'clone', repo, dir]
-    endif
-    call job_start(cmd, opts)
-  endfor
-  split `=bname` | resize 5 | setlocal noconfirm bufhidden=wipe
-endfunction
-command! PluginUpdate call s:plugin_update()
+" plugin manager
+" git clone https://github.com/k-takata/minpac.git ~/.vim/pack/minpac/opt/minpac
+if exists('*minpac#init')
+  call minpac#init()
+  call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+  call minpac#add('https://github.com/FelikZ/ctrlp-py-matcher')
+  call minpac#add('https://github.com/ctrlpvim/ctrlp.vim')
+  call minpac#add('https://github.com/fatih/vim-go')
+  call minpac#add('https://github.com/h1mesuke/vim-alignta')
+  call minpac#add('https://github.com/jonathanfilip/vim-lucius')
+  call minpac#add('https://github.com/othree/yajs.vim')
+  call minpac#add('https://github.com/qpkorr/vim-renamer')
+  call minpac#add('https://github.com/rakr/vim-one')
+  call minpac#add('https://github.com/morhetz/gruvbox')
+  call minpac#add('https://github.com/thinca/vim-quickrun')
+  call minpac#add('https://github.com/w0rp/ale')
+  call minpac#add('https://github.com/tpope/vim-markdown')
+  call minpac#add('https://github.com/prabirshrestha/asyncomplete.vim')
+  call minpac#add('https://github.com/prabirshrestha/async.vim')
+  call minpac#add('https://github.com/prabirshrestha/vim-lsp')
+  call minpac#add('https://github.com/prabirshrestha/asyncomplete-lsp.vim')
+endif
+command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
+command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
+
