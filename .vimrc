@@ -63,22 +63,20 @@ augroup END
 let g:ctrlp_match_func = {'match': 'pymatcher#PyMatch'}
 let g:ctrlp_user_command = 'rg --files %s'
 let g:ctrlp_lazy_update = 1
-"let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_match_window = 'results:50'
 let g:ctrlp_prompt_mappings = {
       \ 'PrtBS()': ['<c-h>', '<bs>'],
       \ 'PrtCurLeft()': ['<left>'],
       \}
 let g:ctrlp_working_path_mode = 0
-"let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_switch_buffer = 'et'
 
-let g:ale_fixers = { 
-      \ 'vue': ['prettier-eslint'],
+
+let g:ale_fixers = {
       \ 'javascript': ['prettier'],
       \}
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_insert_leave = 1
 
 if executable('typescript-language-server')
   au User lsp_setup call lsp#register_server({
@@ -119,7 +117,20 @@ if exists('*minpac#init')
   call minpac#add('https://github.com/prabirshrestha/async.vim')
   call minpac#add('https://github.com/prabirshrestha/vim-lsp')
   call minpac#add('https://github.com/prabirshrestha/asyncomplete-lsp.vim')
+  call minpac#add('dhruvasagar/vim-table-mode')
+  call minpac#add('simeji/winresizer')
+  call minpac#add('airblade/vim-gitgutter')
 endif
 command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
 command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
 
+function! s:clear_undo() abort
+  let old_undolevels = &undolevels
+  setlocal undolevels=-1
+  execute "normal! a \<BS>\<Esc>"
+  let &l:undolevels = old_undolevels
+endfunction
+command! -bar ClearUndo  call s:clear_undo()
+
+command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
+      \ | diffthis | wincmd p | diffthis
