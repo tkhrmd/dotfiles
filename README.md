@@ -23,5 +23,5 @@ git config --global alias.f fetch
 * [Scroll Reverser](https://pilotmoon.com/scrollreverser/)
 
 ```
-$ brew install ripgrep tmux fzy
+$ brew install ripgrep
 ```
