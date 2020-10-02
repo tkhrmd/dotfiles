@@ -1,17 +1,17 @@
 # dotfiles
 
-## Gitのエイリアス設定
+## Git config
 
 ```
 git config --global alias.st status
 git config --global alias.co checkout
 git config --global alias.ico \!"git co \$(git b | fzy | awk '{print \$NF}')"
 git config --global alias.p pull
-git config --global alias.b "branch  --sort=-authordate"
+git config --global alias.b "branch --sort=-authordate"
 git config --global alias.f fetch
 ```
 
-## (Mac) インストールするもの
+## Install (mac)
 
 * [Homebrew](https://brew.sh/)
 * [Docker for Mac](https://docs.docker.com/docker-for-mac/)
@@ -21,7 +21,9 @@ git config --global alias.f fetch
 * [Amphetamine](https://apps.apple.com/jp/app/id937984704)
 * [Quick View Calendar](https://apps.apple.com/jp/app/id1087080039)
 * [Scroll Reverser](https://pilotmoon.com/scrollreverser/)
+* [AltTab](https://alt-tab-macos.netlify.app/)
+* [iTerm2](https://www.iterm2.com/)
 
 ```
-$ brew install ripgrep
+$ brew install ripgrep tmux
 ```
