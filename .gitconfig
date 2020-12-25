@@ -1,0 +1,11 @@
+[alias]
+	st = status
+	co = checkout
+	p = pull
+	b = branch --sort=-authordate
+	f = fetch
+	log-tree = log --graph --pretty=medium
+[merge]
+	ff = false
+[pull]
+	ff = only
