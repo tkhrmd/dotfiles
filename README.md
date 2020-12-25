@@ -5,13 +5,13 @@
 ```
 git config --global alias.st status
 git config --global alias.co checkout
-git config --global alias.ico \!"git co \$(git b | fzy | awk '{print \$NF}')"
+# git config --global alias.ico \!"git co \$(git b | fzy | awk '{print \$NF}')"
 git config --global alias.p pull
 git config --global alias.b "branch --sort=-authordate"
 git config --global alias.f fetch
 ```
 
-## Install (mac)
+## Apps (mac)
 
 * [Homebrew](https://brew.sh/)
 * [Docker for Mac](https://docs.docker.com/docker-for-mac/)
