@@ -320,7 +320,7 @@ function! PackInit() abort
   call minpac#add('ctrlpvim/ctrlp.vim')
   call minpac#add('qpkorr/vim-renamer')
   " call minpac#add('h1mesuke/vim-alignta')
-  call minpac#add('vim-scripts/Align')
+  " call minpac#add('vim-scripts/Align')
   " call minpac#add('mattn/vim-goimports')
   call minpac#add('thinca/vim-quickrun')
   call minpac#add('prabirshrestha/vim-lsp')
@@ -333,6 +333,7 @@ function! PackInit() abort
   call minpac#add('tpope/vim-fugitive')
   call minpac#add('mattn/vim-molder')
   call minpac#add('tkhrmd/vim-molder-buftype', {'frozen': 1})
+  call minpac#add('tkhrmd/vim-molder-lastpath', {'frozen': 1})
   call minpac#add('mattn/vim-sonictemplate')
   call minpac#add('previm/previm')
   " call minpac#add('mattn/vim-lexiv')
@@ -364,7 +365,8 @@ function! PackInit() abort
   " call minpac#add('lifepillar/vim-solarized8')
   " call minpac#add('jeffkreeftmeijer/vim-dim')
   " call minpac#add('ghifarit53/tokyonight-vim')
-
+  " call minpac#add('ap/vim-readdir')
+  call minpac#add('junegunn/vim-easy-align')
   call minpac#add('aklt/plantuml-syntax')
 endfunction
 
