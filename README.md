@@ -27,7 +27,7 @@ git config --global alias.f fetch
 * [iTerm2](https://www.iterm2.com/)
 * Go
 * Node.js
-* Python
+* Google Cloud SDK
 
 ```
 $ brew install ripgrep tmux
