@@ -214,6 +214,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> gr <plug>(lsp-references)
     nmap <buffer> gi <plug>(lsp-implementation)
     nmap <buffer> gt <plug>(lsp-type-definition)
+    " nmap <buffer> <f12> <plug>(lsp-rename)
     nmap <buffer> <leader>rn <plug>(lsp-rename)
     nmap <silent> <buffer> [g <Plug>(lsp-previous-diagnostic)
     nmap <silent> <buffer> ]g <Plug>(lsp-next-diagnostic)
@@ -259,6 +260,12 @@ let g:molder_ext_buftype = 'nowrite'
 nmap <leader>t <plug>(today-open)
 
 "-------------------------------------------------------------------------------
+" plugin: vim-gitgutter
+"-------------------------------------------------------------------------------
+
+let g:gitgutter_map_keys = 0
+
+"-------------------------------------------------------------------------------
 " plugin: PaperColor
 "-------------------------------------------------------------------------------
 
@@ -286,12 +293,6 @@ colorscheme gruvbox
 
 let g:quickrun_no_default_key_mappings = 1
 " nmap <leader>q <Plug>(quickrun)
-
-"-------------------------------------------------------------------------------
-" plugin: prettier
-"-------------------------------------------------------------------------------
-
-let g:prettier#config#print_width = 120
 
 "-------------------------------------------------------------------------------
 " plugin: syntax-
