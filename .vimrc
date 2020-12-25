@@ -161,6 +161,7 @@ augroup myautocmd
   autocmd FileType ruby       setlocal tabstop=2
   autocmd FileType vim        setlocal tabstop=2
   autocmd FileType yaml       setlocal tabstop=2
+  autocmd FileType sh         setlocal tabstop=2
   autocmd FileType go         setlocal noexpandtab
   autocmd FileType markdown   setlocal spelllang+=cjk spell
   autocmd BufNewFile,BufRead *.yml.liquid setlocal filetype=yaml
@@ -214,8 +215,8 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> gr <plug>(lsp-references)
     nmap <buffer> gi <plug>(lsp-implementation)
     nmap <buffer> gt <plug>(lsp-type-definition)
-    " nmap <buffer> <f12> <plug>(lsp-rename)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> <f2> <plug>(lsp-rename)
+    " nmap <buffer> <leader>rn <plug>(lsp-rename)
     nmap <silent> <buffer> [g <Plug>(lsp-previous-diagnostic)
     nmap <silent> <buffer> ]g <Plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
@@ -286,13 +287,6 @@ let g:gitgutter_map_keys = 0
 
 let g:gruvbox_italic = 1
 colorscheme gruvbox
-
-"-------------------------------------------------------------------------------
-" plugin: quickrun
-"-------------------------------------------------------------------------------
-
-let g:quickrun_no_default_key_mappings = 1
-" nmap <leader>q <Plug>(quickrun)
 
 "-------------------------------------------------------------------------------
 " plugin: syntax-
