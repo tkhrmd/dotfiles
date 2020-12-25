@@ -314,8 +314,6 @@ function! PackInit() abort
   call minpac#add('mattn/ctrlp-matchfuzzy')
   call minpac#add('ctrlpvim/ctrlp.vim')
   call minpac#add('qpkorr/vim-renamer')
-  " call minpac#add('h1mesuke/vim-alignta')
-  " call minpac#add('vim-scripts/Align')
   " call minpac#add('mattn/vim-goimports')
   call minpac#add('thinca/vim-quickrun')
   call minpac#add('prabirshrestha/vim-lsp')
@@ -361,7 +359,6 @@ function! PackInit() abort
   " call minpac#add('jeffkreeftmeijer/vim-dim')
   " call minpac#add('ghifarit53/tokyonight-vim')
   " call minpac#add('ap/vim-readdir')
-  call minpac#add('junegunn/vim-easy-align')
   call minpac#add('aklt/plantuml-syntax')
 endfunction
 
