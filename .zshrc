@@ -20,3 +20,7 @@ _cache_hosts=($(grep ^Host $HOME/.ssh/config | awk '$2 != "" {print $2}'))
 
 # 便利リネーム
 alias renamer='vim -c Renamer'
+
+# 色付きls
+alias ls='ls -G'
+alias ll='ls -l'
