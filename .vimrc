@@ -36,6 +36,7 @@ set shellslash
 set shiftwidth=0
 set showcmd
 set showmatch
+set matchtime=0
 set sidescroll=1
 set sidescrolloff=10
 set signcolumn=yes
@@ -57,6 +58,7 @@ set updatetime=100
 set wildmode=longest,list
 set hidden
 set showtabline=2
+set pumheight=10
 
 if has('gui_running')
   set guioptions=
