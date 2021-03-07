@@ -9,6 +9,9 @@ scriptencoding utf-8
 " options
 "-------------------------------------------------------------------------------
 
+"let mapleader = ","
+"let mapleader = "\<space>"
+
 set ambiwidth=double
 set smartindent
 set background=dark
@@ -29,8 +32,7 @@ set nowrap
 set nowrapscan
 set nrformats-=octal
 set number
-" set pastetoggle=<leader>p
-set scroll=5
+"set scroll=5
 set scrolloff=5
 set shellslash
 set shiftwidth=0
@@ -59,6 +61,7 @@ set wildmode=longest,list
 set hidden
 set showtabline=2
 set pumheight=10
+set backspace=indent,eol,start
 
 if has('gui_running')
   set guioptions=
@@ -130,6 +133,8 @@ nnoremap <c-g> 1<c-g>
 nnoremap <silent> <c-j> :bnext<cr>
 nnoremap <silent> <c-k> :bprevious<cr>
 nnoremap <c-c> :set undoreload=0 <bar> edit<cr>
+nnoremap <silent> <c-n> :nohlsearch<cr>
+nnoremap <leader>, :edit $MYVIMRC<cr>
 
 "-------------------------------------------------------------------------------
 " commands
@@ -145,9 +150,9 @@ if executable('sqlformat')
   command! -range=% SQLFmt <line1>,<line2>!sqlformat -r -k lower -i lower -
 endif
 
-if executable('black')
-  command! -range=% PythonFmt <line1>,<line2>!black -q  -
-endif
+
+command! BufOnly for buf in filter(range(1, bufnr('$')), {idx, val -> buflisted(val) && val != bufnr('%') && getbufinfo(val)[0].changed == 0}) |
+      \ execute 'bdelete' buf | endfor
 
 "-------------------------------------------------------------------------------
 " autocmd
@@ -210,18 +215,30 @@ let g:ctrlp_switch_buffer = 'et'
 " plugin: vim-lsp
 "-------------------------------------------------------------------------------
 
+" let g:lsp_diagnostics_highlights_enabled = 0
+" let g:lsp_document_highlight_enabled = 0
+let g:lsp_diagnostics_echo_cursor = 1
+
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
     nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
     nmap <buffer> gr <plug>(lsp-references)
     nmap <buffer> gi <plug>(lsp-implementation)
     nmap <buffer> gt <plug>(lsp-type-definition)
+    "nmap <buffer> <leader>rn <plug>(lsp-rename)
     nmap <buffer> <f2> <plug>(lsp-rename)
-    " nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <silent> <buffer> [g <Plug>(lsp-previous-diagnostic)
-    nmap <silent> <buffer> ]g <Plug>(lsp-next-diagnostic)
+    nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+    "nmap <silent> <buffer> [g <Plug>(lsp-previous-diagnostic)
+    "nmap <silent> <buffer> ]g <Plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.py,*.go call execute('LspDocumentFormatSync')
+
 endfunction
 
 augroup lsp_install
@@ -230,9 +247,6 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-let g:lsp_highlights_enabled = 0
-let g:lsp_textprop_enabled = 0
-let g:lsp_diagnostics_echo_cursor = 1
 
 "-------------------------------------------------------------------------------
 " plugin: previm
@@ -261,6 +275,7 @@ let g:molder_ext_buftype = 'nowrite'
 "-------------------------------------------------------------------------------
 
 nmap <leader>t <plug>(today-open)
+let g:today_dir = '~/Dropbox/memo'
 
 "-------------------------------------------------------------------------------
 " plugin: vim-gitgutter
@@ -272,22 +287,23 @@ let g:gitgutter_map_keys = 0
 " plugin: PaperColor
 "-------------------------------------------------------------------------------
 
-" let g:PaperColor_Theme_Options = {
-"  \   'theme': {
-"  \     'default.dark': {
-"  \       'allow_bold': 1,
-"  \       'allow_italic': 1,
-"  \     }
-"  \   }
-"  \ }
+"let g:PaperColor_Theme_Options = {
+" \   'theme': {
+" \     'default.dark': {
+" \       'allow_bold': 1,
+" \       'allow_italic': 1,
+" \     }
+" \   }
+" \ }
 
-" colorscheme PaperColor
+"colorscheme PaperColor
 
 "-------------------------------------------------------------------------------
 " plugin: gruvbox
 "-------------------------------------------------------------------------------
 
 let g:gruvbox_italic = 1
+let g:gruvbox_sign_column = 'bg0'
 colorscheme gruvbox
 
 "-------------------------------------------------------------------------------
@@ -295,6 +311,45 @@ colorscheme gruvbox
 "-------------------------------------------------------------------------------
 
 let g:plantuml_set_makeprg = 0
+
+"-------------------------------------------------------------------------------
+" plugin: vim-prettier
+"-------------------------------------------------------------------------------
+
+"let g:prettier#quickfix_enabled = 0
+augroup prettier
+    autocmd!
+    autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx,*.css,*.html PrettierAsync
+augroup END
+
+"-------------------------------------------------------------------------------
+" plugin: emmet-vim
+"-------------------------------------------------------------------------------
+
+let g:emmet_install_only_plug = 1
+imap <c-e> <plug>(emmet-expand-abbr)
+
+let g:user_emmet_settings = {
+\    'html': {
+\        'snippets': {
+\            'Grid:c': "<Grid container>${child}${cursor}</Grid>",
+\            'Grid:i': "<Grid item>${child}${cursor}</Grid>",
+\        },
+\    },
+\}
+
+"-------------------------------------------------------------------------------
+" plugin: vim-matchup
+"-------------------------------------------------------------------------------
+
+let g:matchup_mappings_enabled = 0
+nmap % <plug>(matchup-%)
+
+"-------------------------------------------------------------------------------
+" plugin: tagalong.vim
+"-------------------------------------------------------------------------------
+
+let g:tagalong_filetypes = ['xml', 'html', 'javascriptreact', 'typescriptreact']
 
 "-------------------------------------------------------------------------------
 " plugin: minpac
@@ -316,14 +371,16 @@ function! PackInit() abort
   call minpac#add('mattn/ctrlp-matchfuzzy')
   call minpac#add('ctrlpvim/ctrlp.vim')
   call minpac#add('qpkorr/vim-renamer')
-  " call minpac#add('mattn/vim-goimports')
+  "call minpac#add('mattn/vim-goimports')
   call minpac#add('thinca/vim-quickrun')
   call minpac#add('prabirshrestha/vim-lsp')
   call minpac#add('mattn/vim-lsp-settings')
-  call minpac#add('prabirshrestha/asyncomplete.vim')
-  call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
+  call minpac#add('hrsh7th/vim-vsnip')
+  call minpac#add('hrsh7th/vim-vsnip-integ')
+  "call minpac#add('prabirshrestha/asyncomplete.vim')
+  "call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
   call minpac#add('prettier/vim-prettier')
-  " call minpac#add('simeji/winresizer')
+  "call minpac#add('simeji/winresizer')
   call minpac#add('airblade/vim-gitgutter')
   call minpac#add('tpope/vim-fugitive')
   call minpac#add('mattn/vim-molder')
@@ -331,39 +388,45 @@ function! PackInit() abort
   call minpac#add('tkhrmd/vim-molder-lastpath', {'frozen': 1})
   call minpac#add('mattn/vim-sonictemplate')
   call minpac#add('previm/previm')
-  " call minpac#add('mattn/vim-lexiv')
-  " call minpac#add('mattn/vim-maketable')
-  " call minpac#add('chrisbra/matchit')
-  " call minpac#add('vim-python/python-syntax')
-  " call minpac#add('tmux-plugins/vim-tmux-focus-events')
-  " call minpac#add('roxma/vim-tmux-clipboard')
-  " call minpac#add('nathanaelkane/vim-indent-guides')
-  " call minpac#add('tpope/vim-surround')
-  " call minpac#add('machakann/vim-sandwich')
-  " call minpac#add('mattn/benchvimrc-vim')
+  "call minpac#add('mattn/vim-lexiv')
+  "call minpac#add('mattn/vim-maketable')
+  "call minpac#add('chrisbra/matchit')
+  "call minpac#add('vim-python/python-syntax')
+  "call minpac#add('tmux-plugins/vim-tmux-focus-events')
+  "call minpac#add('roxma/vim-tmux-clipboard')
+  "call minpac#add('nathanaelkane/vim-indent-guides')
+  "call minpac#add('tpope/vim-surround')
+  "call minpac#add('machakann/vim-sandwich')
+  "call minpac#add('mattn/benchvimrc-vim')
   call minpac#add('fcpg/vim-osc52')
   call minpac#add('ap/vim-buftabline')
   call minpac#add('tkhrmd/vim-today')
-  " call minpac#add('mattn/vim-prompter')
-  " colorscheme
-  " call minpac#add('koron/vim-monochromenote')
-  " call minpac#add('yasukotelin/shirotelin')
-  " call minpac#add('jaredgorski/fogbell.vim')
-  " call minpac#add('NLKNguyen/papercolor-theme')
-  " call minpac#add('arzg/vim-colors-xcode')
-  " call minpac#add('vim/colorschemes')
-  " call minpac#add('joshdick/onedark.vim')
-  " call minpac#add('aereal/vim-colors-japanesque')
-  " call minpac#add('jonathanfilip/vim-lucius')
-  " call minpac#add('rakr/vim-one')
+  "call minpac#add('mattn/vim-prompter')
+  "call minpac#add('koron/vim-monochromenote')
+  "call minpac#add('yasukotelin/shirotelin')
+  "call minpac#add('jaredgorski/fogbell.vim')
+  "call minpac#add('NLKNguyen/papercolor-theme')
+  "call minpac#add('arzg/vim-colors-xcode')
+  "call minpac#add('vim/colorschemes')
+  "call minpac#add('joshdick/onedark.vim')
+  "call minpac#add('aereal/vim-colors-japanesque')
+  "call minpac#add('jonathanfilip/vim-lucius')
+  "call minpac#add('rakr/vim-one')
   call minpac#add('morhetz/gruvbox')
-  " call minpac#add('lifepillar/vim-solarized8')
-  " call minpac#add('jeffkreeftmeijer/vim-dim')
-  " call minpac#add('ghifarit53/tokyonight-vim')
-  " call minpac#add('ap/vim-readdir')
+  "call minpac#add('lifepillar/vim-solarized8')
+  "call minpac#add('jeffkreeftmeijer/vim-dim')
+  "call minpac#add('ghifarit53/tokyonight-vim')
+  "call minpac#add('ap/vim-readdir')
+  "call minpac#add('vim-scripts/Align')
   call minpac#add('aklt/plantuml-syntax')
+  call minpac#add('mattn/emmet-vim')
+  call minpac#add('andymass/vim-matchup')
+  call minpac#add('AndrewRadev/tagalong.vim')
 endfunction
 
 command! PackUpdate call s:install_minpac() | source $MYVIMRC | call PackInit() | call minpac#update()
 command! PackClean source $MYVIMRC | call PackInit() | call minpac#clean()
 command! PackStatus packadd minpac | call minpac#status()
+
+
+"highlight! link SignColumn LineNr
