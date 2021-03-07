@@ -1,23 +1,38 @@
 # dotfiles
 
-とりあえずインストールするもの (mac)
+## とりあえずインストール (mac)
 
 * [Homebrew](https://brew.sh/)
 * [Docker for Mac](https://docs.docker.com/docker-for-mac/)
 * [AppCleaner](https://freemacsoft.net/appcleaner/)
 * [Rectangle](https://rectangleapp.com/)
-* [MacVim](https://github.com/macvim-dev/macvim)
-* [Amphetamine](https://apps.apple.com/jp/app/id937984704)
+* [KeepingYouAwake](https://github.com/newmarcel/KeepingYouAwake)
 * [Quick View Calendar](https://apps.apple.com/jp/app/id1087080039)
 * [Scroll Reverser](https://pilotmoon.com/scrollreverser/)
 * [AltTab](https://alt-tab-macos.netlify.app/)
-* [iTerm2](https://www.iterm2.com/)
-* Go
-* Node.js
-* Google Cloud SDK
+* [Alacritty](https://github.com/alacritty/alacritty)
+* [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
 ```
-$ brew install ripgrep tmux
-$ npm install -g prettier @google/clasp
-$ pip3 install black sqlparse
+$ brew install \
+    ripgrep \
+    tmux \
+    prettier \
+    black \
+    jq \
+    go \
+    tig \
+    ctop \
+    bat
+```
+
+## Vimをビルド (mac)
+
+```
+$ mkdir -p ~/Workspaces/vim && cd $_
+$ git clone https://github.com/vim/vim.git ~/Workspaces/Vim/vim
+$ cd ~/Workspaces/Vim/vim
+$ ./configure --prefix=$HOME/Workspaces/Vim/dest --enable-fail-if-missing --enable-terminal --enable-multibyte \
+    && make \
+    && make install
 ```
