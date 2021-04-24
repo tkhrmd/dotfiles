@@ -1,0 +1,32 @@
+version: 2
+
+root-markers:
+  - .git/
+
+tools:
+  black: &black
+    format-command: 'black --quiet -'
+    format-stdin: true
+  prettier: &prettier
+    format-command: 'prettier --stdin-filepath ${INPUT}'
+    format-stdin: true
+
+languages:
+  python:
+    - <<: *black
+  javascript:
+    - <<: *prettier
+  javascriptreact:
+    - <<: *prettier
+  typescript:
+    - <<: *prettier
+  typescriptreact:
+    - <<: *prettier
+  css:
+    - <<: *prettier
+  html:
+    - <<: *prettier
+  json:
+    - <<: *prettier
+  yaml:
+    - <<: *prettier
