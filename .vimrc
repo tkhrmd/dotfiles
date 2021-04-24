@@ -226,7 +226,7 @@ function! s:on_lsp_buffer_enabled() abort
   let g:lsp_format_sync_timeout = 1000
 
   " efm-langserver 以外の server が有効なときにマッピング
-  if len(g:lsp#get_allowed_servers()) > 1
+  if len(filter(g:lsp#get_allowed_servers(), {i, v-> v !=# 'efm-langserver'})) > 0
     setlocal omnifunc=lsp#complete
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
     nmap <buffer> gd <plug>(lsp-definition)
