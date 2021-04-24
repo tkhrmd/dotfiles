@@ -55,13 +55,14 @@ set timeout
 set timeoutlen=3000
 set ttimeoutlen=100
 set ttyfast
-set updatetime=100
+" set updatetime=100
 " set viminfo=
 set wildmode=longest,list
 set hidden
 set showtabline=2
 set pumheight=10
 set backspace=indent,eol,start
+set incsearch
 
 if has('gui_running')
   set guioptions=
@@ -125,6 +126,7 @@ let loaded_spellfile_plugin     = 1
 " mappings
 "-------------------------------------------------------------------------------
 
+map Q <nop>
 nnoremap / /\v
 nnoremap ? ?\v
 nnoremap <leader>g :silent<space>grep!<space>
@@ -154,6 +156,8 @@ endif
 command! BufOnly for buf in filter(range(1, bufnr('$')), {idx, val -> buflisted(val) && val != bufnr('%') && getbufinfo(val)[0].changed == 0}) |
       \ execute 'bdelete' buf | endfor
 
+command! OpenWithCp932 :edit ++encoding=cp932
+
 "-------------------------------------------------------------------------------
 " autocmd
 "-------------------------------------------------------------------------------
@@ -178,7 +182,6 @@ augroup myautocmd
   autocmd QuitPre * setlocal bufhidden=delete
   autocmd QuickFixCmdPost grep cwindow | redraw!
   autocmd WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(0), '&buftype') == 'quickfix' | quit | endif
-  autocmd WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(0), '&filetype') == 'quickrun' | quit | endif
 augroup END
 
 "-------------------------------------------------------------------------------
@@ -220,6 +223,10 @@ let g:ctrlp_switch_buffer = 'et'
 let g:lsp_diagnostics_echo_cursor = 1
 
 function! s:on_lsp_buffer_enabled() abort
+  let g:lsp_format_sync_timeout = 1000
+
+  " efm-langserver 以外の server が有効なときにマッピング
+  if len(g:lsp#get_allowed_servers()) > 1
     setlocal omnifunc=lsp#complete
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
     nmap <buffer> gd <plug>(lsp-definition)
@@ -238,6 +245,13 @@ function! s:on_lsp_buffer_enabled() abort
 
     let g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.py,*.go call execute('LspDocumentFormatSync')
+  endif
+
+  command! EfmLangserverFormatSync call execute('LspDocumentFormatSync --server=efm-langserver')
+  command! Black call execute('EfmLangserverFormatSync')
+  autocmd! BufWritePre *.py Black
+  command! Prettier call execute('EfmLangserverFormatSync')
+  autocmd! BufWritePre *.js,*.jsx,*.ts,*.tsx,*.css,*.html Prettier
 
 endfunction
 
@@ -247,6 +261,12 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
+" ~/.config/efm-langserver/config.yaml を参照
+let g:lsp_settings = {
+\   'efm-langserver': {
+\       'disabled': v:false,
+\   }
+\}
 
 "-------------------------------------------------------------------------------
 " plugin: previm
@@ -317,10 +337,10 @@ let g:plantuml_set_makeprg = 0
 "-------------------------------------------------------------------------------
 
 "let g:prettier#quickfix_enabled = 0
-augroup prettier
-    autocmd!
-    autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx,*.css,*.html PrettierAsync
-augroup END
+"augroup prettier
+"    autocmd!
+"    autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx,*.css,*.html PrettierAsync
+"augroup END
 
 "-------------------------------------------------------------------------------
 " plugin: emmet-vim
@@ -372,16 +392,16 @@ function! PackInit() abort
   call minpac#add('ctrlpvim/ctrlp.vim')
   call minpac#add('qpkorr/vim-renamer')
   "call minpac#add('mattn/vim-goimports')
-  call minpac#add('thinca/vim-quickrun')
+  "call minpac#add('thinca/vim-quickrun')
   call minpac#add('prabirshrestha/vim-lsp')
   call minpac#add('mattn/vim-lsp-settings')
   call minpac#add('hrsh7th/vim-vsnip')
   call minpac#add('hrsh7th/vim-vsnip-integ')
   "call minpac#add('prabirshrestha/asyncomplete.vim')
   "call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
-  call minpac#add('prettier/vim-prettier')
+  "call minpac#add('prettier/vim-prettier')
   "call minpac#add('simeji/winresizer')
-  call minpac#add('airblade/vim-gitgutter')
+  "call minpac#add('airblade/vim-gitgutter')
   call minpac#add('tpope/vim-fugitive')
   call minpac#add('mattn/vim-molder')
   call minpac#add('tkhrmd/vim-molder-buftype', {'frozen': 1})
@@ -391,7 +411,7 @@ function! PackInit() abort
   "call minpac#add('mattn/vim-lexiv')
   "call minpac#add('mattn/vim-maketable')
   "call minpac#add('chrisbra/matchit')
-  "call minpac#add('vim-python/python-syntax')
+  call minpac#add('vim-python/python-syntax')
   "call minpac#add('tmux-plugins/vim-tmux-focus-events')
   "call minpac#add('roxma/vim-tmux-clipboard')
   "call minpac#add('nathanaelkane/vim-indent-guides')
@@ -430,3 +450,27 @@ command! PackStatus packadd minpac | call minpac#status()
 
 
 "highlight! link SignColumn LineNr
+let g:lsp_document_code_action_signs_enabled = 0
+let g:python_highlight_all = 1
+
+
+
+vnoremap v $h
+
+" コマンドラインモード時の移動をEmacs風にする
+" 行頭へ移動
+cnoremap <C-a> <Home>
+" 一文字戻る
+cnoremap <C-b> <Left>
+" カーソルの下の文字を削除
+cnoremap <C-d> <Del>
+" 行末へ移動
+cnoremap <C-e> <End>
+" 一文字進む
+cnoremap <C-f> <Right>
+" コマンドライン履歴を一つ進む
+cnoremap <C-n> <Down>
+" コマンドライン履歴を一つ戻る
+cnoremap <C-p> <Up>
+
+
