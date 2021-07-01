@@ -22,17 +22,16 @@ $ brew install \
     jq \
     go \
     tig \
-    ctop \
-    bat
+    ctop
 ```
 
 ## Vimをビルド (mac)
 
 ```
-$ mkdir -p ~/Workspaces/vim && cd $_
-$ git clone https://github.com/vim/vim.git ~/Workspaces/Vim/vim
-$ cd ~/Workspaces/Vim/vim
-$ ./configure --prefix=$HOME/Workspaces/Vim/dest --enable-fail-if-missing --enable-terminal --enable-multibyte \
+$ mkdir -p ~/workspaces/vim && cd $_
+$ git clone https://github.com/vim/vim.git
+$ cd vim
+$ ./configure --prefix=$HOME/workspaces/vim/dest --enable-fail-if-missing --enable-terminal --enable-multibyte \
     && make \
     && make install
 ```
