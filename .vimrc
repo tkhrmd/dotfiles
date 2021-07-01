@@ -31,7 +31,7 @@ set noswapfile
 set nowrap
 set nowrapscan
 set nrformats-=octal
-set number
+"set number
 "set scroll=5
 set scrolloff=5
 set shellslash
@@ -40,7 +40,7 @@ set showcmd
 set showmatch
 set matchtime=0
 set sidescroll=1
-set sidescrolloff=10
+set sidescrolloff=5
 set signcolumn=yes
 set smartcase
 set smarttab
@@ -55,11 +55,10 @@ set timeout
 set timeoutlen=3000
 set ttimeoutlen=100
 set ttyfast
-" set updatetime=100
-" set viminfo=
+"set updatetime=100
+"set viminfo=
 set wildmode=longest,list
 set hidden
-set showtabline=2
 set pumheight=10
 set backspace=indent,eol,start
 set incsearch
@@ -132,8 +131,6 @@ nnoremap ? ?\v
 nnoremap <leader>g :silent<space>grep!<space>
 nnoremap <leader>v :let &ve = &ve ==# 'all' ? '' : 'all'<cr>:echo 'Virtual editing ' . (&ve ==# 'all' ? 'enabled' : 'disabled')<cr>
 nnoremap <c-g> 1<c-g>
-nnoremap <silent> <c-j> :bnext<cr>
-nnoremap <silent> <c-k> :bprevious<cr>
 nnoremap <c-c> :set undoreload=0 <bar> edit<cr>
 nnoremap <silent> <c-n> :nohlsearch<cr>
 nnoremap <leader>, :edit $MYVIMRC<cr>
@@ -179,9 +176,10 @@ augroup myautocmd
   autocmd BufNewFile,BufRead *.dig setlocal filetype=yaml indentkeys-=<:> indentkeys-=0#
   autocmd BufNewFile,BufRead *.blade.php setlocal filetype=html
   autocmd BufNewFile,BufRead *.gs setlocal filetype=javascript
-  autocmd QuitPre * setlocal bufhidden=delete
-  autocmd QuickFixCmdPost grep cwindow | redraw!
+  "autocmd QuitPre * setlocal bufhidden=delete
+  autocmd QuickFixCmdPost grep,vimgrep cwindow | redraw!
   autocmd WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(0), '&buftype') == 'quickfix' | quit | endif
+  autocmd WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(0), '&filetype') == 'quickrun' | quit | endif
 augroup END
 
 "-------------------------------------------------------------------------------
@@ -198,7 +196,7 @@ command! Vimrc edit $MYVIMRC
 " plugin: CtrlP
 "-------------------------------------------------------------------------------
 
-let g:ctrlp_types = ['fil']
+let g:ctrlp_types = ['fil', 'mru']
 let g:ctrlp_match_func = {'match': 'ctrlp_matchfuzzy#matcher'}
 if executable('rg')
   let g:ctrlp_user_command = 'rg --files %s'
@@ -211,6 +209,23 @@ let g:ctrlp_prompt_mappings = {
             \   'PrtBS()': ['<c-h>', '<bs>'],
             \   'PrtCurLeft()': ['<left>'],
             \ }
+"let g:ctrlp_prompt_mappings = {
+"      \ 'PrtSelectMove("j")':   ['<c-n>', '<up>'],
+"      \ 'PrtSelectMove("k")':   ['<c-p>', '<down>'],
+"      \ 'PrtHistory(-1)':       [],
+"      \ 'PrtHistory(1)':        [],
+"      \ 'ToggleType(1)':        [],
+"      \ 'ToggleType(-1)':       [],
+"      \ 'PrtCurLeft()':         ['<c-b>', '<left>'],
+"      \ 'PrtCurRight()':        ['<c-f>', '<right>'],
+"      \ 'PrtBS()':              ['<c-h>', '<bs>'],
+"      \ }
+"
+"      \ 'PrtCurLeft()':         ['<c-b>', '<left>'],
+"      \ 'PrtCurRight()':        ['<c-f>', '<right>'],
+"      \ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
+"      \ 'PrtSelectMove("k")':   ['<c-p>', '<up>'],
+
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_switch_buffer = 'et'
 
@@ -223,11 +238,8 @@ let g:ctrlp_switch_buffer = 'et'
 let g:lsp_diagnostics_echo_cursor = 1
 
 function! s:on_lsp_buffer_enabled() abort
-  let g:lsp_format_sync_timeout = 1000
-
-  " efm-langserver 以外の server が有効なときにマッピング
-  if len(filter(g:lsp#get_allowed_servers(), {i, v-> v !=# 'efm-langserver'})) > 0
     setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
     nmap <buffer> gd <plug>(lsp-definition)
     nmap <buffer> gs <plug>(lsp-document-symbol-search)
@@ -235,24 +247,15 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> gr <plug>(lsp-references)
     nmap <buffer> gi <plug>(lsp-implementation)
     nmap <buffer> gt <plug>(lsp-type-definition)
-    "nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> <f2> <plug>(lsp-rename)
-    nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
-    "nmap <silent> <buffer> [g <Plug>(lsp-previous-diagnostic)
-    "nmap <silent> <buffer> ]g <Plug>(lsp-next-diagnostic)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
+    inoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    inoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
     let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.py,*.go call execute('LspDocumentFormatSync')
-  endif
-
-  command! EfmLangserverFormatSync call execute('LspDocumentFormatSync --server=efm-langserver')
-  command! Black call execute('EfmLangserverFormatSync')
-  autocmd! BufWritePre *.py Black
-  command! Prettier call execute('EfmLangserverFormatSync')
-  autocmd! BufWritePre *.js,*.jsx,*.ts,*.tsx,*.css,*.html Prettier
-
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 endfunction
 
 augroup lsp_install
@@ -261,12 +264,6 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-" ~/.config/efm-langserver/config.yaml を参照
-let g:lsp_settings = {
-\   'efm-langserver': {
-\       'disabled': v:false,
-\   }
-\}
 
 "-------------------------------------------------------------------------------
 " plugin: previm
@@ -330,46 +327,25 @@ colorscheme gruvbox
 " plugin: syntax-
 "-------------------------------------------------------------------------------
 
-let g:plantuml_set_makeprg = 0
+"let g:plantuml_set_makeprg = 0
 
 "-------------------------------------------------------------------------------
-" plugin: vim-prettier
+" vim-prettier
 "-------------------------------------------------------------------------------
 
-"let g:prettier#quickfix_enabled = 0
-"augroup prettier
-"    autocmd!
-"    autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx,*.css,*.html PrettierAsync
-"augroup END
+augroup prettier
+  autocmd!
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.html PrettierAsync
+augroup END
 
 "-------------------------------------------------------------------------------
-" plugin: emmet-vim
+" black
 "-------------------------------------------------------------------------------
 
-let g:emmet_install_only_plug = 1
-imap <c-e> <plug>(emmet-expand-abbr)
-
-let g:user_emmet_settings = {
-\    'html': {
-\        'snippets': {
-\            'Grid:c': "<Grid container>${child}${cursor}</Grid>",
-\            'Grid:i': "<Grid item>${child}${cursor}</Grid>",
-\        },
-\    },
-\}
-
-"-------------------------------------------------------------------------------
-" plugin: vim-matchup
-"-------------------------------------------------------------------------------
-
-let g:matchup_mappings_enabled = 0
-nmap % <plug>(matchup-%)
-
-"-------------------------------------------------------------------------------
-" plugin: tagalong.vim
-"-------------------------------------------------------------------------------
-
-let g:tagalong_filetypes = ['xml', 'html', 'javascriptreact', 'typescriptreact']
+augroup black
+  autocmd!
+  autocmd BufWritePre *.py Black
+augroup END
 
 "-------------------------------------------------------------------------------
 " plugin: minpac
@@ -397,11 +373,12 @@ function! PackInit() abort
   call minpac#add('mattn/vim-lsp-settings')
   call minpac#add('hrsh7th/vim-vsnip')
   call minpac#add('hrsh7th/vim-vsnip-integ')
-  "call minpac#add('prabirshrestha/asyncomplete.vim')
-  "call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
-  "call minpac#add('prettier/vim-prettier')
+  call minpac#add('prabirshrestha/asyncomplete.vim')
+  call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
+  call minpac#add('prettier/vim-prettier')
   "call minpac#add('simeji/winresizer')
-  "call minpac#add('airblade/vim-gitgutter')
+  call minpac#add('airblade/vim-gitgutter') " これいれると大きいファイル開けない
+  "call minpac#add('mhinz/vim-signify') こっちの方が多少まし
   call minpac#add('tpope/vim-fugitive')
   call minpac#add('mattn/vim-molder')
   call minpac#add('tkhrmd/vim-molder-buftype', {'frozen': 1})
@@ -411,7 +388,8 @@ function! PackInit() abort
   "call minpac#add('mattn/vim-lexiv')
   "call minpac#add('mattn/vim-maketable')
   "call minpac#add('chrisbra/matchit')
-  call minpac#add('vim-python/python-syntax')
+
+  "call minpac#add('vim-python/python-syntax')
   "call minpac#add('tmux-plugins/vim-tmux-focus-events')
   "call minpac#add('roxma/vim-tmux-clipboard')
   "call minpac#add('nathanaelkane/vim-indent-guides')
@@ -419,7 +397,7 @@ function! PackInit() abort
   "call minpac#add('machakann/vim-sandwich')
   "call minpac#add('mattn/benchvimrc-vim')
   call minpac#add('fcpg/vim-osc52')
-  call minpac#add('ap/vim-buftabline')
+  "call minpac#add('ap/vim-buftabline')
   call minpac#add('tkhrmd/vim-today')
   "call minpac#add('mattn/vim-prompter')
   "call minpac#add('koron/vim-monochromenote')
@@ -438,10 +416,17 @@ function! PackInit() abort
   "call minpac#add('ghifarit53/tokyonight-vim')
   "call minpac#add('ap/vim-readdir')
   "call minpac#add('vim-scripts/Align')
-  call minpac#add('aklt/plantuml-syntax')
-  call minpac#add('mattn/emmet-vim')
-  call minpac#add('andymass/vim-matchup')
-  call minpac#add('AndrewRadev/tagalong.vim')
+  "call minpac#add('aklt/plantuml-syntax')
+  "call minpac#add('mattn/emmet-vim')
+  "call minpac#add('andymass/vim-matchup')
+  "call minpac#add('AndrewRadev/tagalong.vim')
+  call minpac#add('prettier/vim-prettier')
+  "call minpac#add('psf/black')
+  call minpac#add('kana/vim-submode', {'type': 'opt'})
+  "call minpac#add('yegappan/mru')
+  "call minpac#add('iberianpig/tig-explorer.vim')
+  call minpac#add('drewtempelmeyer/palenight.vim')
+  call minpac#add('pbrisbin/vim-colors-off')
 endfunction
 
 command! PackUpdate call s:install_minpac() | source $MYVIMRC | call PackInit() | call minpac#update()
@@ -452,8 +437,6 @@ command! PackStatus packadd minpac | call minpac#status()
 "highlight! link SignColumn LineNr
 let g:lsp_document_code_action_signs_enabled = 0
 let g:python_highlight_all = 1
-
-
 
 vnoremap v $h
 
@@ -474,3 +457,97 @@ cnoremap <C-n> <Down>
 cnoremap <C-p> <Up>
 
 
+function! s:black() abort
+  "call setqflist([])
+  let cmd = get(g:, 'black_program', 'black -q -')
+  let tmpfile = ''
+  if stridx(cmd, '%s') > -1
+    let tmpfile = tempname()
+    let cmd = substitute(cmd, '%s', tr(tmpfile, '\', '/'), 'g')
+    let lines = system(cmd, iconv(join(getline(1, '$'), "\n"), &encoding, 'utf-8'))
+    if v:shell_error != 0
+      call delete(tmpfile)
+      echoerr substitute(lines, '[\r\n]', ' ', 'g')
+      return
+    endif
+    let lines = join(readfile(tmpfile), "\n")
+    call delete(tmpfile)
+  else
+    let lines = system(cmd, iconv(join(getline(1, '$'), "\n"), &encoding, 'utf-8'))
+    if v:shell_error != 0
+      echoerr substitute(lines, '[\r\n]', ' ', 'g')
+      return
+    endif
+  endif
+  let pos = getcurpos()
+  silent! %d _
+  call setline(1, split(lines, "\n"))
+  call setpos('.', pos)
+endfunction
+
+nnoremap <silent> <Plug>(black) :<c-u>call <SID>black()<cr>
+
+command! -nargs=0 Black call <SID>black()
+
+packadd vim-submode
+
+let g:submode_timeoutlen = 500
+call submode#enter_with('winsize', 'n', '', '<C-w>>', '10<C-w>>')
+call submode#enter_with('winsize', 'n', '', '<C-w><', '10<C-w><')
+call submode#enter_with('winsize', 'n', '', '<C-w>+', '10<C-w>+')
+call submode#enter_with('winsize', 'n', '', '<C-w>-', '10<C-w>-')
+call submode#map('winsize', 'n', '', '>', '10<C-w>>')
+call submode#map('winsize', 'n', '', '<', '10<C-w><')
+call submode#map('winsize', 'n', '', '+', '10<C-w>+')
+call submode#map('winsize', 'n', '', '-', '10<C-w>-')
+
+
+let g:terminal_ansi_colors = [
+\ '#32344a',
+\ '#f7768e',
+\ '#9ece6a',
+\ '#e0af68',
+\ '#7aa2f7',
+\ '#ad8ee6',
+\ '#449dab',
+\ '#787c99',
+\ '#444b6a',
+\ '#ff7a93',
+\ '#b9f27c',
+\ '#ff9e64',
+\ '#7da6ff',
+\ '#bb9af7',
+\ '#0db9d7',
+\ '#acb0d0',
+\ ]
+
+" Italics for my favorite color scheme
+"let g:palenight_terminal_italics=1
+"colorscheme palenight
+"set t_ut=
+
+"highlight LineNr NONE
+"highlight CursorLine NONE
+"set t_Co=0
+"set notermguicolors
+
+nnoremap ]q :cnext<CR>
+nnoremap [q :cprevious<CR>
+nnoremap ]b :bnext<CR>
+nnoremap [b :bprevious<CR>
+nnoremap ]t :tabnext<CR>
+nnoremap [t :tabprevious<CR>
+
+
+function! s:clear_undo() abort
+   let old_undolevels = &l:undolevels
+   setlocal undolevels=-1
+   execute "normal! a \<BS>\<Esc>"
+   let &l:undolevels = old_undolevels
+   unlet old_undolevels
+endfunction
+command! -bar ClearUndo call s:clear_undo()
+
+nnoremap <silent> <c-w>gn :vnew<cr>
+nnoremap <silent> <c-w><c-g>n :vnew<cr>
+nnoremap <silent> <c-w><c-g><c-n> :vnew<cr>
